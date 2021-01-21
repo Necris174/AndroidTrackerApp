@@ -25,6 +25,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void setPreferenceLabel (Preference preference, String value){
         if (preference instanceof EditTextPreference){
             preference.setSummary(value);
+
         }
     }
 
