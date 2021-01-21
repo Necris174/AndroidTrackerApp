@@ -30,24 +30,22 @@ public class MainActivity extends AppCompatActivity {
         start = findViewById(R.id.button_start);
 
 
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (start.getText().equals("Старт")) {
-                    if (ContextCompat.checkSelfPermission(
-                            getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
-                    } else {
-                        Log.d("LOCATION", "старт");
-                        startLocationService();
-                        start.setText("СТОП");
-                    }
-                } else {
-                    stopLocationService();
-                    start.setText("Старт");
 
+        start.setOnClickListener(view -> {
+            if (start.getText().equals("Старт")) {
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
+                } else {
+                    Log.d("LOCATION", "старт");
+                    startLocationService();
+                    start.setText("СТОП");
                 }
+            } else {
+                stopLocationService();
+                start.setText("Старт");
+
             }
         });
 

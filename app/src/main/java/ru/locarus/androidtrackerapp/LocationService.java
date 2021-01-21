@@ -127,6 +127,7 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         if (intent!= null){
             String action = intent.getAction();
             if(action != null){
