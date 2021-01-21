@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationServices;
 public class LocationService extends Service {
     private int interval;
     private String action;
+    PointsDbOpenHelper pointsDbOpenHelper = new PointsDbOpenHelper(this);
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -39,9 +40,12 @@ public class LocationService extends Service {
                         locationResult.getLastLocation().getLongitude(),
                         locationResult.getLastLocation().getSpeed(),
                         locationResult.getLastLocation().getTime(),locationResult.getLastLocation().getAltitude());
-
+                pointsDbOpenHelper.addPoint(point);
                 Log.d("receiver", point.getLatitude() + ", " + point.getLatitude() + " " + point.getAltitude());
                 sendMessage(point);
+                Log.d("db", "Широта: " + pointsDbOpenHelper.getPoint(1).getLatitude()+
+                        "Долгота: "+ pointsDbOpenHelper.getPoint(1).getLongitude()+
+                        "Скороть: " + pointsDbOpenHelper.getPoint(1).getSpeed());
                 System.out.println(action);
             }
         }

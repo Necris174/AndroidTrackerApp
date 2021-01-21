@@ -51,12 +51,12 @@ public class PointsDbOpenHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        cursor.close();
-        return new Point(Integer.parseInt(cursor.getString(0)),
-                Double.parseDouble(cursor.getString(1)),
-                Float.parseFloat(cursor.getString(2)),
-                Double.parseDouble(cursor.getString(3)),
-                Double.parseDouble(cursor.getString(4)));
+
+        return new Point(Double.parseDouble(cursor.getString(1)),
+                Double.parseDouble(cursor.getString(2)),
+                Float.parseFloat(cursor.getString(3)),
+                Double.parseDouble(cursor.getString(4)),
+                Double.parseDouble(cursor.getString(5)));
     }
 
 }
