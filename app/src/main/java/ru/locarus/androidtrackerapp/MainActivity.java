@@ -17,6 +17,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.Hex;
+
+import java.util.List;
+
+import static ru.locarus.androidtrackerapp.Constants.TAG;
+
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private Button start;
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PointsDbOpenHelper pointsDbOpenHelper = new PointsDbOpenHelper(this);
+
+
         textView = findViewById(R.id.textView2);
         start = findViewById(R.id.button_start);
 

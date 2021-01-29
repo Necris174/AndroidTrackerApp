@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PointsDbOpenHelper extends SQLiteOpenHelper {
     public PointsDbOpenHelper( Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
@@ -31,32 +34,64 @@ public class PointsDbOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
     public void addPoint (Point point){
+        //Получение объекта БД
         SQLiteDatabase db = this.getWritableDatabase();
+        //Взаимодействие с БД и передача ключа и значения
         ContentValues contentValues = new ContentValues();
         contentValues.put(Constants.LATITUDE, point.getLatitude());
         contentValues.put(Constants.LONGITUDE, point.getLongitude());
         contentValues.put(Constants.SPEED, point.getSpeed());
         contentValues.put(Constants.TIME, point.getTime());
         contentValues.put(Constants.ALTITUDE, point.getAltitude());
+        //Запись в БД
         db.insert(Constants.TABLE_NAME,null,contentValues);
         db.close();
     }
     public Point getPoint(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Constants.TABLE_NAME, new String[] {Constants._ID, Constants.LATITUDE,
-                        Constants.LONGITUDE,Constants.SPEED,Constants.TIME,Constants.ALTITUDE }, Constants._ID + "=?", new String[] {String.valueOf(id)},
+        Cursor cursor = db.query(Constants.TABLE_NAME, new String[] {
+                Constants._ID,
+                Constants.LATITUDE,
+                Constants.LONGITUDE,
+                Constants.SPEED,
+                Constants.TIME,
+                Constants.ALTITUDE },
+                Constants._ID + "=?",
+                new String[] {String.valueOf(id)},
                 null, null,
                 null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        return new Point(Double.parseDouble(cursor.getString(1)),
+        return new Point(Integer.parseInt(cursor.getString(0)), Double.parseDouble(cursor.getString(1)),
                 Double.parseDouble(cursor.getString(2)),
                 Float.parseFloat(cursor.getString(3)),
                 Double.parseDouble(cursor.getString(4)),
                 Double.parseDouble(cursor.getString(5)));
     }
+    public void deletePoint(Point point){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Constants.TABLE_NAME,Constants._ID + "=?", new String[]{Constants._ID});
+    }
 
+    public List<Point> getAllPoints(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Point> pointList = new ArrayList<>();
+        String selectPoints = "SELECT * FROM " + Constants.TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectPoints,null);
+        if (cursor.moveToFirst()){
+            do {
+                Point point = new Point(Integer.parseInt(cursor.getString(0)),
+                        Double.parseDouble(cursor.getString(1)),
+                        Double.parseDouble(cursor.getString(2)),
+                        Float.parseFloat(cursor.getString(3)),
+                        Double.parseDouble(cursor.getString(4)),
+                        Double.parseDouble(cursor.getString(5)));
+                pointList.add(point);
+            }while (cursor.moveToNext());
+        }
+        return pointList;
+    }
 }
